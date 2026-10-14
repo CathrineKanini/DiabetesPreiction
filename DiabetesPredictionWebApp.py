@@ -38,6 +38,7 @@ with open(SCALER_PATH, "rb") as scaler_file:
 
 
 # Prediction function
+
 def diabetes_prediction(input_data):
     input_data_as_numpy_array = np.asarray(
         input_data, dtype=float
@@ -46,6 +47,7 @@ def diabetes_prediction(input_data):
     std_data = scaler.transform(input_data_as_numpy_array)
     prediction = loaded_model.predict(std_data)
 
+    # Diagnostic information in Spyder console
     print("User input:", input_data_as_numpy_array)
     print("Scaled input:", std_data)
     print("Raw model prediction:", prediction)
@@ -54,10 +56,19 @@ def diabetes_prediction(input_data):
         print("Model classes:", loaded_model.classes_)
 
     if hasattr(loaded_model, "decision_function"):
-        print("Decision score:",
-              loaded_model.decision_function(std_data))
+        print(
+            "Decision score:",
+            loaded_model.decision_function(std_data)
+        )
 
-    return prediction[0]
+    # User-friendly result
+    if prediction[0] == 0:
+        return "The model predicts a negative diabetes classification."
+    elif prediction[0] == 1:
+        return "The model predicts a positive diabetes classification."
+    else:
+        return f"Unexpected prediction value: {prediction[0]}"
+
 
 
 # Streamlit application
