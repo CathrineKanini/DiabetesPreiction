@@ -46,10 +46,18 @@ def diabetes_prediction(input_data):
     std_data = scaler.transform(input_data_as_numpy_array)
     prediction = loaded_model.predict(std_data)
 
-    if prediction[0] == 0:
-        return "The model predicts a negative diabetes classification."
-    else:
-        return "The model predicts a positive diabetes classification."
+    print("User input:", input_data_as_numpy_array)
+    print("Scaled input:", std_data)
+    print("Raw model prediction:", prediction)
+
+    if hasattr(loaded_model, "classes_"):
+        print("Model classes:", loaded_model.classes_)
+
+    if hasattr(loaded_model, "decision_function"):
+        print("Decision score:",
+              loaded_model.decision_function(std_data))
+
+    return prediction[0]
 
 
 # Streamlit application
